@@ -1059,6 +1059,7 @@ export function SettingsPanel({
 							cropRegion={cropRegion}
 							onCropChange={onCropChange}
 							aspectRatio={aspectRatio}
+							borderRadius={borderRadius}
 						/>
 						<div className="mt-6 space-y-4">
 							<div className="flex flex-wrap items-end gap-3">

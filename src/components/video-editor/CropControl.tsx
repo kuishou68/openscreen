@@ -14,11 +14,17 @@ interface CropControlProps {
 	cropRegion: CropRegion;
 	onCropChange: (region: CropRegion) => void;
 	aspectRatio: AspectRatio;
+	borderRadius?: number;
 }
 
 type DragHandle = "top" | "right" | "bottom" | "left" | "move" | null;
 
-export function CropControl({ videoElement, cropRegion, onCropChange }: CropControlProps) {
+export function CropControl({
+	videoElement,
+	cropRegion,
+	onCropChange,
+	borderRadius = 0,
+}: CropControlProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [isDragging, setIsDragging] = useState<DragHandle>(null);
@@ -130,6 +136,7 @@ export function CropControl({ videoElement, cropRegion, onCropChange }: CropCont
 	const isVideoPortrait = videoAspectRatio < 1;
 	const maxContainerWidth = isVideoPortrait ? "40vw" : "75vw";
 	const maxContainerHeight = "75vh";
+	const cropCornerRadius = Math.max(0, borderRadius);
 
 	return (
 		<div className="w-full p-8">
@@ -167,6 +174,8 @@ export function CropControl({ videoElement, cropRegion, onCropChange }: CropCont
 									y={`${cropPixelY}%`}
 									width={`${cropPixelWidth}%`}
 									height={`${cropPixelHeight}%`}
+									rx={cropCornerRadius}
+									ry={cropCornerRadius}
 									fill="black"
 									style={{ transition: "none" }}
 								/>
@@ -184,12 +193,13 @@ export function CropControl({ videoElement, cropRegion, onCropChange }: CropCont
 				</div>
 
 				<div
-					className="absolute z-10 pointer-events-auto cursor-move"
+					className="absolute z-10 pointer-events-auto cursor-move border border-[#34B27B]/70"
 					style={{
 						left: `${cropPixelX}%`,
 						top: `${cropPixelY}%`,
 						width: `${cropPixelWidth}%`,
 						height: `${cropPixelHeight}%`,
+						borderRadius: `${cropCornerRadius}px`,
 						transition: "none",
 					}}
 					onPointerDown={(e) => handlePointerDown(e, "move")}
